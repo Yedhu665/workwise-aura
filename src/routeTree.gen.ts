@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
+import { Route as AppReportsRouteImport } from './routes/_app.reports'
 import { Route as AppLeaveRouteImport } from './routes/_app.leave'
 import { Route as AppEmployeesRouteImport } from './routes/_app.employees'
 import { Route as AppChatRouteImport } from './routes/_app.chat'
@@ -24,6 +25,11 @@ const AppRoute = AppRouteImport.update({
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppReportsRoute = AppReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
   getParentRoute: () => AppRoute,
 } as any)
 const AppLeaveRoute = AppLeaveRouteImport.update({
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/chat': typeof AppChatRoute
   '/employees': typeof AppEmployeesRoute
   '/leave': typeof AppLeaveRoute
+  '/reports': typeof AppReportsRoute
 }
 export interface FileRoutesByTo {
   '/attendance': typeof AppAttendanceRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/chat': typeof AppChatRoute
   '/employees': typeof AppEmployeesRoute
   '/leave': typeof AppLeaveRoute
+  '/reports': typeof AppReportsRoute
   '/': typeof AppIndexRoute
 }
 export interface FileRoutesById {
@@ -76,13 +84,28 @@ export interface FileRoutesById {
   '/_app/chat': typeof AppChatRoute
   '/_app/employees': typeof AppEmployeesRoute
   '/_app/leave': typeof AppLeaveRoute
+  '/_app/reports': typeof AppReportsRoute
   '/_app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/attendance' | '/bugs' | '/chat' | '/employees' | '/leave'
+  fullPaths:
+    | '/'
+    | '/attendance'
+    | '/bugs'
+    | '/chat'
+    | '/employees'
+    | '/leave'
+    | '/reports'
   fileRoutesByTo: FileRoutesByTo
-  to: '/attendance' | '/bugs' | '/chat' | '/employees' | '/leave' | '/'
+  to:
+    | '/attendance'
+    | '/bugs'
+    | '/chat'
+    | '/employees'
+    | '/leave'
+    | '/reports'
+    | '/'
   id:
     | '__root__'
     | '/_app'
@@ -91,6 +114,7 @@ export interface FileRouteTypes {
     | '/_app/chat'
     | '/_app/employees'
     | '/_app/leave'
+    | '/_app/reports'
     | '/_app/'
   fileRoutesById: FileRoutesById
 }
@@ -112,6 +136,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/reports': {
+      id: '/_app/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AppReportsRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/leave': {
@@ -158,6 +189,7 @@ interface AppRouteChildren {
   AppChatRoute: typeof AppChatRoute
   AppEmployeesRoute: typeof AppEmployeesRoute
   AppLeaveRoute: typeof AppLeaveRoute
+  AppReportsRoute: typeof AppReportsRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
@@ -167,6 +199,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppChatRoute: AppChatRoute,
   AppEmployeesRoute: AppEmployeesRoute,
   AppLeaveRoute: AppLeaveRoute,
+  AppReportsRoute: AppReportsRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
