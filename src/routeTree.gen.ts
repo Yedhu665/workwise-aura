@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
 import { Route as AppChatRouteImport } from './routes/_app.chat'
+import { Route as AppBugsRouteImport } from './routes/_app.bugs'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -27,27 +28,35 @@ const AppChatRoute = AppChatRouteImport.update({
   path: '/chat',
   getParentRoute: () => AppRoute,
 } as any)
+const AppBugsRoute = AppBugsRouteImport.update({
+  id: '/bugs',
+  path: '/bugs',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
+  '/bugs': typeof AppBugsRoute
   '/chat': typeof AppChatRoute
 }
 export interface FileRoutesByTo {
+  '/bugs': typeof AppBugsRoute
   '/chat': typeof AppChatRoute
   '/': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
+  '/_app/bugs': typeof AppBugsRoute
   '/_app/chat': typeof AppChatRoute
   '/_app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/chat'
+  fullPaths: '/' | '/bugs' | '/chat'
   fileRoutesByTo: FileRoutesByTo
-  to: '/chat' | '/'
-  id: '__root__' | '/_app' | '/_app/chat' | '/_app/'
+  to: '/bugs' | '/chat' | '/'
+  id: '__root__' | '/_app' | '/_app/bugs' | '/_app/chat' | '/_app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,15 +86,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppChatRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/bugs': {
+      id: '/_app/bugs'
+      path: '/bugs'
+      fullPath: '/bugs'
+      preLoaderRoute: typeof AppBugsRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppBugsRoute: typeof AppBugsRoute
   AppChatRoute: typeof AppChatRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppBugsRoute: AppBugsRoute,
   AppChatRoute: AppChatRoute,
   AppIndexRoute: AppIndexRoute,
 }
