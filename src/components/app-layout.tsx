@@ -8,7 +8,8 @@ import { useState } from "react";
 import { useTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
-const nav = [
+type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; badge?: number };
+const nav: NavItem[] = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
   { to: "/chat", label: "Chat", icon: MessageSquare, badge: 4 },
   { to: "/bugs", label: "Bug Tracker", icon: Bug, badge: 12 },
@@ -17,7 +18,7 @@ const nav = [
   { to: "/employees", label: "Employees", icon: Users },
   { to: "/reports", label: "Reports", icon: BarChart3 },
   { to: "/settings", label: "Settings", icon: Settings },
-] as const;
+];
 
 export function AppLayout() {
   const path = useRouterState({ select: (s) => s.location.pathname });
@@ -44,7 +45,7 @@ export function AppLayout() {
           return (
             <Link
               key={item.to}
-              to={item.to}
+              to={item.to as any}
               onClick={() => setMobileOpen(false)}
               className={cn(
                 "group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all",
