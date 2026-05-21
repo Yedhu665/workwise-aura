@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
+import { Route as AppLeaveRouteImport } from './routes/_app.leave'
 import { Route as AppChatRouteImport } from './routes/_app.chat'
 import { Route as AppBugsRouteImport } from './routes/_app.bugs'
 import { Route as AppAttendanceRouteImport } from './routes/_app.attendance'
@@ -22,6 +23,11 @@ const AppRoute = AppRouteImport.update({
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLeaveRoute = AppLeaveRouteImport.update({
+  id: '/leave',
+  path: '/leave',
   getParentRoute: () => AppRoute,
 } as any)
 const AppChatRoute = AppChatRouteImport.update({
@@ -45,11 +51,13 @@ export interface FileRoutesByFullPath {
   '/attendance': typeof AppAttendanceRoute
   '/bugs': typeof AppBugsRoute
   '/chat': typeof AppChatRoute
+  '/leave': typeof AppLeaveRoute
 }
 export interface FileRoutesByTo {
   '/attendance': typeof AppAttendanceRoute
   '/bugs': typeof AppBugsRoute
   '/chat': typeof AppChatRoute
+  '/leave': typeof AppLeaveRoute
   '/': typeof AppIndexRoute
 }
 export interface FileRoutesById {
@@ -58,19 +66,21 @@ export interface FileRoutesById {
   '/_app/attendance': typeof AppAttendanceRoute
   '/_app/bugs': typeof AppBugsRoute
   '/_app/chat': typeof AppChatRoute
+  '/_app/leave': typeof AppLeaveRoute
   '/_app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/attendance' | '/bugs' | '/chat'
+  fullPaths: '/' | '/attendance' | '/bugs' | '/chat' | '/leave'
   fileRoutesByTo: FileRoutesByTo
-  to: '/attendance' | '/bugs' | '/chat' | '/'
+  to: '/attendance' | '/bugs' | '/chat' | '/leave' | '/'
   id:
     | '__root__'
     | '/_app'
     | '/_app/attendance'
     | '/_app/bugs'
     | '/_app/chat'
+    | '/_app/leave'
     | '/_app/'
   fileRoutesById: FileRoutesById
 }
@@ -92,6 +102,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/leave': {
+      id: '/_app/leave'
+      path: '/leave'
+      fullPath: '/leave'
+      preLoaderRoute: typeof AppLeaveRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/chat': {
@@ -122,6 +139,7 @@ interface AppRouteChildren {
   AppAttendanceRoute: typeof AppAttendanceRoute
   AppBugsRoute: typeof AppBugsRoute
   AppChatRoute: typeof AppChatRoute
+  AppLeaveRoute: typeof AppLeaveRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
@@ -129,6 +147,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppAttendanceRoute: AppAttendanceRoute,
   AppBugsRoute: AppBugsRoute,
   AppChatRoute: AppChatRoute,
+  AppLeaveRoute: AppLeaveRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
